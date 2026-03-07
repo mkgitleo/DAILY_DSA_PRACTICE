@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int minDeletion(string str, int k) {
+        vector<int>temp(26,0);
+        int n=str.size();
+        for(int i=0;i<n;i++){
+            char ele=str[i];
+            int index=ele-'a';
+            temp[index]++;
+
+
+        }
+        vector<int>arr;
+        for(int i=0;i<26;i++){
+            int ele=temp[i];
+            if(ele){
+                arr.push_back(ele);
+
+            }
+        }
+        sort(arr.begin(),arr.end());
+        int x=arr.size();
+        if(x<=k){
+            return 0;
+
+        }
+        int target=x-k;
+        int ans=0;
+
+        for(int i=0;i<target;i++){
+            ans=ans+arr[i];
+
+
+        }
+        return ans;
+        
+    }
+};
