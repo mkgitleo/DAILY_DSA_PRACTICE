@@ -1,0 +1,75 @@
+class Solution {
+public:
+    int minFlips(string str) {
+        int n=str.size();
+        string s=str+str;
+        
+        int d1=0;
+        int d2=0;
+        int i=0;
+        int j=0;
+        int ans=1e9;
+
+        while(j<2*n){
+            int index=j;
+            char alt1;
+            char alt2;
+            if(index%2==0){
+                alt1='0';
+                alt2='1';
+
+
+            }
+            else{
+                alt1='1';
+                alt2='0';
+
+            }
+            char ele=s[j];
+            char x=alt1;
+            char y=alt2;
+            if(ele!=x){
+                d1++;
+
+            }
+            if(ele!=y){
+                d2++;
+            }
+            if(j-i+1>n){
+                char left1;
+                char left2;
+                if(i%2==0){
+                    left1='0';
+                    left2='1';
+
+
+                }
+                else{
+                    left1='1';
+                    left2='0';
+
+                }
+                if(s[i]!=left1){
+                    d1--;
+
+                }
+                if(s[i]!=left2){
+                    d2--;
+
+                }
+                i++;
+
+            }
+            if(j-i+1==n){
+                ans=min(ans,min(d1,d2));
+
+            }
+            
+            j++;
+
+
+        }
+        return ans;
+
+    }
+};
