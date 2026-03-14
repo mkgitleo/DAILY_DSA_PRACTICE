@@ -1,0 +1,47 @@
+class Solution {
+public:
+void  solve(int n,string &temp,string &ans,int& k){
+    if(!k){
+        return;
+    }
+    if(n==temp.size()){
+       
+        k--;
+        if(!k){
+            ans=temp;
+
+        }
+
+        return;
+    }
+    for(char i='a';i<='c';i++){
+        if(temp.size()&&temp.back()==i){
+            continue;
+        }
+        temp.push_back(i);
+        solve(n,temp,ans,k);
+        temp.pop_back();
+
+
+    }
+    
+
+}
+    string getHappyString(int n, int k) {
+        
+        string temp;
+        string ans;
+        
+        solve(n,temp,ans,k);
+        if(k){
+            return "";
+
+        }
+        return ans;
+
+
+
+
+        
+    }
+};
