@@ -1,0 +1,37 @@
+class Solution {
+public:
+void solve(int n,string &temp,vector<string>&arr){
+    if(n==temp.size()){
+        arr.push_back(temp);
+        return;
+    }
+    for(char i='a';i<='c';i++){
+        if(temp.size()&&temp.back()==i){
+            continue;
+        }
+        temp.push_back(i);
+        solve(n,temp,arr);
+        temp.pop_back();
+
+
+    }
+    
+
+}
+    string getHappyString(int n, int k) {
+        
+        string temp;
+        vector<string>arr;
+        solve(n,temp,arr);
+        if(k>arr.size()){
+            return "";
+
+        }
+        return arr[k-1];
+
+
+
+
+        
+    }
+};
