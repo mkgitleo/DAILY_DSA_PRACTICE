@@ -1,0 +1,56 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+int f(string str,int k){
+    int i=0;
+    int j=0;
+    int n=str.size();
+    vector<int>temp(26,0);
+    int ans=0;
+
+    while(j<n){
+        char ch=str[j];
+        int index=ch-'a';
+        temp[index]++;
+        while(i<n&&temp[index]>1){
+            char left=str[i];
+            int ind=left-'a';
+            temp[ind]--;
+            i++;
+
+
+
+        }
+        if(j-i+1==k){
+            ans++;
+            char left=str[i];
+            i++;
+            int x=left-'a';
+            temp[x]--;
+
+
+
+        }
+        
+        j++;
+
+
+
+    }
+    return ans;
+
+}
+int main(){
+    string str;
+    int k;
+    cin>>str;
+    cin>>k;
+    int ans=f(str,k);
+    cout<<ans<<endl;
+
+
+
+
+    return 0;
+
+}
