@@ -1,1 +1,66 @@
+#include <iostream>
+#include <vector>
+#include <numeric>   // added
+using namespace std;
+
+int helper(vector<int>& arr, long long mini) {   // mini -> long long
+    int n = arr.size();
+    int friends = 0;
+    long long sum = 0;   // changed
+
+    for (int i = 0; i < n; i++) {
+        int ele = arr[i];
+        sum = sum + ele;
+
+        if (sum >= mini) {
+            friends++;
+            sum = 0;
+        }
+    }
+    return friends;
+}
+
+long long f(vector<int>& arr, int k) {   // return type long long
+    int n = arr.size();
+
+    long long sum = accumulate(arr.begin(), arr.end(), 0LL); // changed
+
+    long long start = 1;                  // changed
+    long long end = sum / (k + 1);        // search range optimization
+    long long ans = 0;                    // changed
+
+    while (start <= end) {
+        long long mid = start + (end - start) / 2;  // safe mid
+
+        int temp = helper(arr, mid);
+
+        if (temp >= k + 1) {
+            ans = mid;
+            start = mid + 1;
+        }
+        else {
+            end = mid - 1;
+        }
+    }
+    return ans;
+}
+
+int main() {
+    vector<int> arr;
+    int n;
+    cin >> n;
+
+    int k;
+    cin >> k;
+
+    for (int i = 0; i < n; i++) {
+        int ele;
+        cin >> ele;
+        arr.push_back(ele);
+    }
+
+    cout << f(arr, k);
+
+    return 0;
+}
 
