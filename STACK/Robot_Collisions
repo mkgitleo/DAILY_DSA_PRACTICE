@@ -1,0 +1,100 @@
+class Solution {
+public:
+    vector<int> survivedRobotsHealths(vector<int>& pos, vector<int>& h, string dir) {
+         
+        int n=pos.size();
+        
+        vector<pair<pair<int,int>,pair<int,char>>>arr;
+        // arr → {{position, health}, {index, direction}}
+        for(int i=0;i<n;i++){
+            int position=pos[i];
+            int health=h[i];
+            int index=i;
+            char direction=dir[i];
+           
+            pair<int,int>p1;
+            pair<int,char>p2;
+
+            p1.first=position;
+            p1.second=health;
+            p2.first=index;
+            p2.second=direction;
+            arr.push_back({p1,p2});
+
+
+
+
+        }
+        sort(arr.begin(),arr.end());
+        stack<pair<pair<int,int>,char>>s1;// stack → {{health, index}, direction}
+       
+        for(int i=0;i<n;i++){
+            
+            int curr_health=arr[i].first.second;
+            char curr_direction=arr[i].second.second;
+            int curr_index=arr[i].second.first;
+            if(curr_direction == 'R'){
+                s1.push({{curr_health, curr_index}, curr_direction});
+            }
+
+            else{
+              
+                while(s1.size()&&s1.top().second=='R'){
+                    int prev_health = s1.top().first.first;
+                    int prev_index = s1.top().first.second;
+                     // Case A: Right robot stronger
+                    if(prev_health > curr_health){
+                        s1.pop();
+                        s1.push({{prev_health - 1, prev_index}, 'R'});
+                        curr_health = 0;
+                        break;
+                    }
+
+                    // Case B: Left robot stronger
+                    else if(prev_health < curr_health){
+                        s1.pop();
+                        curr_health--;
+                    }
+
+                    // Case C: Equal → both die
+                    else{
+                        s1.pop();
+                        curr_health = 0;
+                        break;
+                    }
+
+                }
+                // If current robot survives
+                if(curr_health > 0){
+                    s1.push({{curr_health, curr_index}, curr_direction});
+                }
+                
+
+            }
+        }
+        vector<int> ans(n, 0);
+        while(!s1.empty()){
+            int health = s1.top().first.first;
+            int index = s1.top().first.second;
+            s1.pop();
+
+            ans[index] = health;
+        }
+
+        // Step 5: Remove dead robots (health = 0)
+        vector<int> result;
+        for(int i = 0; i < n; i++){
+            if(ans[i] > 0){
+                result.push_back(ans[i]);
+            }
+        }
+
+        return result;
+        
+        
+
+
+
+        
+    }
+};
