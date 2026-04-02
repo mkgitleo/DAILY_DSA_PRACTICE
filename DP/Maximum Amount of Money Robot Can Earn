@@ -1,0 +1,55 @@
+  int maximumAmount(vector<vector<int>>& coins) {
+        int m = coins.size();
+        int n = coins[0].size();
+
+        vector<vector<vector<int>>> dp(m, vector<vector<int>>(n, vector<int>(3, INT_MIN)));
+
+        // Base case
+        for (int k = 0; k <= 2; k++) {
+            if (coins[m-1][n-1] < 0 && k > 0)
+                dp[m-1][n-1][k] = 0;
+            else
+                dp[m-1][n-1][k] = coins[m-1][n-1];
+        }
+
+        // Fill DP table
+        for (int i = m-1; i >= 0; i--) {
+            for (int j = n-1; j >= 0; j--) {
+                for (int k = 0; k <= 2; k++) {
+
+                    if (i == m-1 && j == n-1) continue;
+
+                    int val = coins[i][j];
+
+                    int bestNext = INT_MIN;
+
+                    // Move Down
+                    if (i + 1 < m)
+                        bestNext = max(bestNext, dp[i+1][j][k]);
+
+                    // Move Right
+                    if (j + 1 < n)
+                        bestNext = max(bestNext, dp[i][j+1][k]);
+
+                    // Case 1: No neutralization
+                    if (bestNext != INT_MIN)
+                        dp[i][j][k] = max(dp[i][j][k], val + bestNext);
+
+                    // Case 2: Neutralize
+                    if (val < 0 && k > 0) {
+                        int bestNext2 = INT_MIN;
+
+                        if (i + 1 < m)
+                            bestNext2 = max(bestNext2, dp[i+1][j][k-1]);
+
+                        if (j + 1 < n)
+                            bestNext2 = max(bestNext2, dp[i][j+1][k-1]);
+
+                        dp[i][j][k] = max(dp[i][j][k], bestNext2);
+                    }
+                }
+            }
+        }
+
+        return dp[0][0][2];
+    }
