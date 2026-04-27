@@ -1,0 +1,53 @@
+class Solution {
+public:
+    bool bfs(vector<vector<char>>& input, int r, int c, int sr, int sc,vector<vector<int>>& vis) {
+
+        int drow[] = {-1, 0, 1, 0};
+        int dcol[] = {0, 1, 0, -1};
+        queue<pair<pair<int, int>, pair<int, int>>> q;
+        q.push({{sr, sc}, {-1, -1}});
+        vis[sr][sc] = 1;
+        while (q.size()) {
+            int crow = q.front().first.first;
+            int ccol = q.front().first.second;
+            int prow = q.front().second.first;
+            int pcol = q.front().second.second;
+            char cchar = input[crow][ccol];
+
+            q.pop();
+
+            for (int i = 0; i < 4; i++) {
+                int nrow = crow + drow[i];
+                int ncol = ccol + dcol[i];
+                if (nrow >= 0 && nrow < r && ncol >= 0 && ncol < c) {
+                    char nchar = input[nrow][ncol];
+                    if (cchar == nchar) {
+                        if (!vis[nrow][ncol]) {
+                            vis[nrow][ncol] = 1;
+                            q.push({{nrow, ncol}, {crow, ccol}});
+
+                        } else if (vis[nrow][ncol] &&(nrow != prow || ncol != pcol)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    bool containsCycle(vector<vector<char>>& input) {
+        int r = input.size();
+        int c = input[0].size();
+        vector<vector<int>> vis(r, vector<int>(c, 0));
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                if (!vis[i][j]) {
+                    if (bfs(input, r, c, i, j, vis)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+};
