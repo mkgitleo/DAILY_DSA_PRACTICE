@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int matchPlayersAndTrainers(vector<int>& arr1, vector<int>& arr2) {
+        sort(arr1.begin(),arr1.end());
+        sort(arr2.begin(),arr2.end());
+        int n1=arr1.size();
+        int n2=arr2.size();
+
+        int ans=0;
+        int i=0;
+        int j=0;
+        while(i<n1&&j<n2){
+            int p=arr1[i];
+            int t=arr2[j];
+            if(p<=t){
+                ans++;
+                i++;
+                j++;
+
+            }
+            else{
+                j++;
+
+            }
+        }
+        return ans;
+
+        
+    }
+};
